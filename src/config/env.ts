@@ -5,7 +5,6 @@ const envSchema = z.object({
   GEMINI_API_TOKEN: z.string().min(1),
   FIREBASE_API_KEY: z.string().min(1),
   FIREBASE_PROJECT_ID: z.string().min(1),
-  FIREBASE_DATABASE_NAME: z.string().min(1),
   FIREBASE_APP_ID: z.string().min(1),
   FIREBASE_SENDER_ID: z.string().min(1),
   DB_URL: z.string().min(1),
