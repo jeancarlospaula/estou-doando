@@ -82,6 +82,21 @@ class BotController {
         chatId: chat.id,
       });
 
+      if (!user) {
+        const userData = {
+          chatId: chat.id,
+          name: chat.first_name as string,
+          username: chat.username as string,
+        };
+
+        await UserModel.create(userData);
+
+        logger.info({
+          msg: 'Usuário cadastrado com sucesso.',
+          user: userData,
+        });
+      }
+
       if (!user?.eula) {
         const buttons = [
           [{ text: 'ACEITO', callback_data: 'acceptedTerms' }],
