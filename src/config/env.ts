@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
+  PORT: z.coerce.number().default(3000),
   TELEGRAM_BOT_TOKEN: z.string().min(1),
   GEMINI_API_TOKEN: z.string().min(1),
   FIREBASE_API_KEY: z.string().min(1),

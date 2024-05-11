@@ -1,5 +1,8 @@
+import cors from 'cors';
+import express from 'express';
 import { Telegraf } from 'telegraf-ts';
 
+import { routes } from './api';
 import { env } from './config';
 import {
   BotController,
@@ -9,11 +12,39 @@ import {
 import { Firebase, mongodb, redis } from './infra';
 import { logger } from './utils';
 
-const start = async (): Promise<void> => {
-  Firebase.connect();
-  await mongodb.connect();
-  await redis.connect();
+const apiStart = async (): Promise<void> => {
+  const app = express();
 
+  app.use(
+    cors({
+      origin: '*',
+    }),
+  );
+
+  app.use(express.json());
+
+  app.use('/', routes);
+
+  app.get('/hc', (_, res) =>
+    res.send({
+      message: 'ok',
+    }),
+  );
+
+  app.use((_, res) =>
+    res.status(400).send({
+      error: {
+        message: 'Rota não implementada.',
+      },
+    }),
+  );
+
+  app.listen(env.PORT, () => {
+    logger.info({ message: `Servidor rodando na porta ${env.PORT}.` });
+  });
+};
+
+const botStart = async (): Promise<void> => {
   const bot = new Telegraf(env.TELEGRAM_BOT_TOKEN);
 
   // BotController
@@ -53,6 +84,15 @@ const start = async (): Promise<void> => {
   );
 
   await bot.launch();
+};
+
+const start = async (): Promise<void> => {
+  Firebase.connect();
+  await mongodb.connect();
+  await redis.connect();
+
+  await apiStart();
+  await botStart();
 };
 
 start().catch((error: any) => {

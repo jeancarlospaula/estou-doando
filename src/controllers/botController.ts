@@ -113,7 +113,7 @@ class BotController {
         }
 
         const address = {
-          zipCode: response.data.cep,
+          zipCode: response.data.cep?.replace(/-/g, ''),
           city: response.data.localidade,
           uf: response.data.uf,
         };
