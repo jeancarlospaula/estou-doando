@@ -78,7 +78,7 @@ class BotController {
     try {
       const message = ctx.update.message?.text?.trim() as string;
 
-      const user = await UserModel.findOne({
+      let user = await UserModel.findOne({
         chatId: chat.id,
       });
 
@@ -89,7 +89,7 @@ class BotController {
           username: chat.username as string,
         };
 
-        await UserModel.create(userData);
+        user = await UserModel.create(userData);
 
         logger.info({
           msg: 'Usuário cadastrado com sucesso.',
