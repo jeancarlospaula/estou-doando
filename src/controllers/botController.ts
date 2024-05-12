@@ -45,8 +45,10 @@ class BotController {
         [{ text: 'NÃO ACEITO', callback_data: 'rejectedTerms' }],
       ];
 
+      const terms = 'https://www.estoudoando.com.br/terms';
+
       return ctx.replyWithMarkdown(
-        `Bem-vindo ao *Estou Doando*, ${userData.name}. Aceita os termos de uso?`,
+        `Bem-vindo ao *Estou Doando*, ${userData.name}. Aceita os termos de uso?\n\n${terms}`,
         {
           reply_markup: {
             inline_keyboard: buttons,
